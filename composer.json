@@ -1,0 +1,23 @@
+{
+    "name": "nekkoy/gateway-abstract",
+    "description": "Abstract Gateway",
+    "homepage": "https://github.com/nekkoy/gateway-abstract",
+    "type": "library",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Alexander Dudiak",
+            "email": "031991@gmail.com",
+            "homepage": "https://github.com/Nekkoy",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nekkoy\\GatewayAbstract\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.2"
+    }
+}
