@@ -57,7 +57,7 @@ abstract class AbstractSendMessageService
      * @param MessageDTO $message
      * @param int $max_attempts
      */
-    public function __construct(AbstractConfigDTO $config, MessageDTO $message, int $max_attempts = 1)
+    public function __construct($config, $message, $max_attempts = 1)
     {
         $this->config = $config;
         $this->message = $message;

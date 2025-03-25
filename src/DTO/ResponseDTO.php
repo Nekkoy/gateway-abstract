@@ -11,7 +11,7 @@ class ResponseDTO
      * Response message
      * @var string
      */
-    public string $message;
+    public $message;
 
     /**
      * Response code
@@ -20,20 +20,20 @@ class ResponseDTO
      *  > 0 - http code errors
      * @var int
      */
-    public int $code;
+    public $code;
 
     /**
      * Response ID
      * @var mixed
      */
-    public string $id;
+    public $id;
 
     /**
      * @param string $message
      * @param int $code
      * @param mixed $id
      */
-    public function __construct(string $message, int $code = 0, mixed $id = 0) {
+    public function __construct($message, $code = 0, $id = 0) {
         $this->message = $message;
         $this->code = $code;
         $this->id = $id;
@@ -52,6 +52,15 @@ class ResponseDTO
      */
     public function __set($name, $value) {
         $this->{$name} = $value;
+    }
+
+    /**
+     * Magic isset method
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name) {
+        return isset($this->{$name});
     }
 
     /**

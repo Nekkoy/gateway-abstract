@@ -14,51 +14,54 @@ abstract class AbstractConfigDTO
      * Name of the gateway
      * @var string
      */
-    public string $module;
+    public $module;
 
     /**
      * Indicates whether the gateway is enabled
      * @var bool
      */
-    public bool $enabled = false;
+    public $enabled = false;
 
     /**
      * Position of the gateway in the list
      * @var int
      */
-    public int $priority = 1;
+    public $priority = 1;
 
     /**
      * Allowed phone prefix for messages processed by the gateway
      * @var string
      */
-    public string $prefix = "any";
+    public $prefix = "any";
 
     /**
      * If a message contains a gateway tag, it will be sent only through this gateway
      * @var string
      */
-    public string $tags = "";
+    public $tags = "";
 
     /**
      * Indicates whether this gateway should be used as the default
      * @var bool
      */
-    public bool $default = false;
+    public $default = false;
 
     /**
      * Developer mode flag; messages will not be sent
      * @var bool
      */
-    public bool $devmode = false;
+    public $devmode = false;
 
     /**
      * Message handling class
      * @var \Nekkoy\GatewayAbstract\Services\AbstractSendMessageService
      */
-    public string $handler = \Nekkoy\GatewayAbstract\Services\AbstractSendMessageService::class;
+    public $handler = \Nekkoy\GatewayAbstract\Services\AbstractSendMessageService::class;
 
-    public function __construct(array $config)
+    /**
+     * @param array $config
+     */
+    public function __construct($config)
     {
         foreach($config as $key => $value) {
             $this->{$key} = $value;
@@ -73,6 +76,15 @@ abstract class AbstractConfigDTO
      */
     public function __set($name, $value) {
         $this->{$name} = $value;
+    }
+
+    /**
+     * Magic isset method
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name) {
+        return isset($this->{$name});
     }
 
     /**

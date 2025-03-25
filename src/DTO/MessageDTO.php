@@ -11,26 +11,26 @@ class MessageDTO
      * Message text
      * @var string
      */
-    public string $text;
+    public $text;
 
     /**
      * Message recipient
      * @var string
      */
-    public string $destination;
+    public $destination;
 
     /**
      * Telegram User ID
      * @var int
      */
-    public int $user_id;
+    public $user_id;
 
     /**
      * @param string $text
      * @param string $destination
      * @param int $telegram_id
      */
-    public function __construct(string $text, string $destination, int $telegram_id = 0) {
+    public function __construct($text, $destination, $telegram_id = 0) {
         $this->text = trim($text);
         $this->destination = $destination;
         $this->user_id = $telegram_id;
@@ -44,6 +44,15 @@ class MessageDTO
      */
     public function __set($name, $value) {
         $this->{$name} = $value;
+    }
+
+    /**
+     * Magic isset method
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name) {
+        return isset($this->{$name});
     }
 
     /**
