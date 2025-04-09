@@ -97,12 +97,10 @@ abstract class AbstractSendMessageService
         } elseif ( !$this->enabled ) {
             return new ResponseDTO('Not enabled', -1);
         } elseif ( isset($this->users) && empty($this->users) ) {
-            if( isset($this->config->skip) && $this->config->skip == true ) {
-                // not error if skip intended
-                return new ResponseDTO('Skipped', 0);
-            }
-
             return new ResponseDTO('User not found', -2);
+        } elseif ( isset($this->config->skip) && $this->config->skip) {
+            // not error if skip intended
+            return new ResponseDTO('Skipped', 0);
         } else {
             $ch = curl_init($this->url());
             if( $ch === false ) {
