@@ -3,7 +3,7 @@
     "description": "Abstract Gateway",
     "homepage": "https://github.com/nekkoy/gateway-abstract",
     "type": "library",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "authors": [
         {
             "name": "Alexander Dudiak",
@@ -18,7 +18,9 @@
         }
     },
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.2",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+        "ext-curl": "*"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

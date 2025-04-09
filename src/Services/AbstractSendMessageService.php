@@ -94,7 +94,14 @@ abstract class AbstractSendMessageService
         // режим разработчика
         if( $this->config->devmode ) {
             $this->response = $this->development(); // имитируем ответ
-        } elseif( !$this->enabled ) {
+        } elseif ( !$this->enabled ) {
+            return new ResponseDTO('Not enabled', -1);
+        } elseif ( isset($this->users) && empty($this->users) ) {
+            if( isset($this->config->skip) && $this->config->skip == true ) {
+                // not error if skip intended
+                return new ResponseDTO('Skipped', 0);
+            }
+
             return new ResponseDTO('User not found', -2);
         } else {
             $ch = curl_init($this->url());
@@ -115,30 +122,7 @@ abstract class AbstractSendMessageService
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header);
             }
 
-            $postData = $this->data();
-            if( !empty($postData) ) {
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-            }
-
-            Log::debug($this->url());
-            Log::debug($postData);
-
-            $attempts = 1;
-            do {
-                try {
-                    $this->response = curl_exec($ch);
-                    $this->response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-                    Log::debug($this->response);
-                } catch (\Exception $e) {
-                    $this->response_code = 408; // Request Timeout
-                    $this->response_message = $e->getMessage();
-                }
-
-                $attempts++;
-            } while($attempts <= $this->max_attempts);
-            curl_close($ch);
+            $this->execute($ch);
 
             if( $this->response === false ) {
                 return new ResponseDTO('No response from gateway', -1000);
@@ -148,5 +132,32 @@ abstract class AbstractSendMessageService
         $this->response();
 
         return new ResponseDTO($this->response_message, $this->response_code, $this->message_id);
+    }
+
+    protected function execute($ch) {
+        $postData = $this->data();
+        if( !empty($postData) ) {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        }
+
+        Log::debug($this->url());
+        Log::debug($postData);
+
+        $attempts = 1;
+        do {
+            try {
+                $this->response = curl_exec($ch);
+                $this->response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+                Log::debug($this->response);
+            } catch (\Exception $e) {
+                $this->response_code = 408; // Request Timeout
+                $this->response_message = $e->getMessage();
+            }
+
+            $attempts++;
+        } while($attempts <= $this->max_attempts);
+        curl_close($ch);
     }
 }
